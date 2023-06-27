@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.lang.reflect.Type;
+
 public class MainActivity extends AppCompatActivity {
     private TextView podcastTxt;
     private Button startApp;
