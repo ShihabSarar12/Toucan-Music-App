@@ -15,6 +15,7 @@ import java.lang.reflect.Type;
 public class MainActivity extends AppCompatActivity {
     private TextView podcastTxt;
     private Button startApp;
+    private final static int EXIT_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

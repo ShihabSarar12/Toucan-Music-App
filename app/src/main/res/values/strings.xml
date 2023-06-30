@@ -5,4 +5,6 @@
     <string name="hero_end_text">With Enthusiasm</string>
     <string name="account_create">Don\'t have an account? </string>
     <string name="account_create_link"><u>create an account</u></string>
+    <string name="account_login">Already have an account? </string>
+    <string name="account_login_link"><u>login to account</u></string>
 </resources>
