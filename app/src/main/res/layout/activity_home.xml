@@ -6,58 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Home"
     android:orientation="vertical"
-    android:background="@drawable/login_picture"
     >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="280dp"
-        android:orientation="vertical"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingVertical="20dp"
-            >
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/profile"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:hint="Enter user email"
-                android:textColorHint="#A19A9A"
-                android:layout_marginRight="20dp"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
-            >
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/password"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:hint="Enter password"
-                android:textColorHint="#A19A9A"
-                android:layout_marginRight="20dp"
-                />
-        </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 }, null, Shader.TileMode.REPEAT);
         podcastTxt.getPaint().setShader(shader);
         startApp.setOnClickListener(view->{
-            startActivity(new Intent(MainActivity.this, Home.class));
+            startActivity(new Intent(MainActivity.this, Login.class));
         });
     }
 }

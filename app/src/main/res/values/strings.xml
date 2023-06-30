@@ -3,4 +3,6 @@
     <string name="hero_start_text">Listen to</string>
     <string name="hero_middle_text">Podcasts</string>
     <string name="hero_end_text">With Enthusiasm</string>
+    <string name="account_create">Don\'t have an account? </string>
+    <string name="account_create_link"><u>create an account</u></string>
 </resources>
