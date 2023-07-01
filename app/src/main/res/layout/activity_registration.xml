@@ -7,22 +7,32 @@
     tools:context=".Login"
     android:orientation="vertical"
     >
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="30dp"
-        app:lottie_rawRes="@raw/login_animation"
-        app:lottie_loop="true"
-        app:lottie_autoPlay="true"
-        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Registration"
         android:textSize="40sp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:fontFamily="@font/agdasima_bold"
+        />
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profileImg"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+        app:strokeColor="@color/black"
+        android:layout_gravity="center"
+        android:src="@drawable/upload"
+        app:strokeWidth="1dp"
+    />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/upload_img"
+        android:textSize="15sp"
+        android:layout_gravity="center"
         />
     <LinearLayout
         android:layout_width="match_parent"
