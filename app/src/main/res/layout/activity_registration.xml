@@ -19,8 +19,9 @@
         />
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profileImg"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="fitCenter"
         app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
         app:strokeColor="@color/black"
         android:layout_gravity="center"
@@ -28,6 +29,7 @@
         app:strokeWidth="1dp"
     />
     <TextView
+        android:id="@+id/uploadImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/upload_img"

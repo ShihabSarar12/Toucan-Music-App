@@ -14,6 +14,8 @@ public class Registration extends AppCompatActivity {
     private final int GALLERY_REQ_CODE = 1000;
     private TextView loginAccBtn;
     private ShapeableImageView profileImg;
+    private TextView uploadImg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,7 @@ public class Registration extends AppCompatActivity {
 
         loginAccBtn = findViewById(R.id.loginAccBtn);
         profileImg = findViewById(R.id.profileImg);
+        uploadImg = findViewById(R.id.uploadImg);
 
         profileImg.setOnClickListener(view->{
             Intent iGallery = new Intent(Intent.ACTION_PICK);
@@ -38,6 +41,7 @@ public class Registration extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==RESULT_OK && requestCode == GALLERY_REQ_CODE){
             profileImg.setImageURI(data.getData());
+            uploadImg.setText("");
         }
     }
 }
