@@ -9,10 +9,9 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:lottie_rawRes="@raw/start_animation"
+        android:layout_height="450dp"
+        app:lottie_rawRes="@raw/intro_animation"
         app:lottie_autoPlay="true"
-        app:lottie_loop="true"
         />
     <TextView
         android:id="@+id/start_txt"

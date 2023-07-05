@@ -10,8 +10,24 @@
     <ListView
         android:id="@+id/musicList"
         android:layout_width="match_parent"
-        android:layout_height="700dp"
+        android:layout_height="620dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:listSelector="#AEABAF"
         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/playBtn"
+            android:src="@drawable/baseline_play_arrow_24"
+            />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"

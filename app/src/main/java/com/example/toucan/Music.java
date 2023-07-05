@@ -1,6 +1,5 @@
 package com.example.toucan;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -10,21 +9,30 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Music extends AppCompatActivity {
     private BottomNavigationView bottomNavigation;
+    private ImageView playBtn;
     private static final int PERMISSION_REQ = 1;
-    ArrayList<String> arrayList;
+    private ArrayList<String> arrayListTitle;
+    private ArrayList<String> arrayListLocation;
+    private ArrayList<String> arrayListMedia;
+    public static MediaPlayer mediaPlayer;
     private ListView listView;
     ArrayAdapter<String> adapter;
     @Override
@@ -33,6 +41,7 @@ public class Music extends AppCompatActivity {
         setContentView(R.layout.activity_music);
 
         bottomNavigation = findViewById(R.id.bottomNavigation);
+        playBtn = findViewById(R.id.playBtn);
 
         bottomNavigation.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottomHome){
@@ -41,12 +50,19 @@ public class Music extends AppCompatActivity {
                 return true;
             } else if (item.getItemId() == R.id.bottomSearch) {
                 return true;
-            } else if (item.getItemId() == R.id.bottomMusic){
+            } else if (item.getItemId() == R.id.bottomMusic) {
                 return true;
             } else if (item.getItemId() == R.id.bottomPerson) {
                 return true;
             }
             return false;
+        });
+        playBtn.setOnClickListener(view->{
+            if(mediaPlayer.isPlaying()){
+                mediaPlayer.pause();
+            }else{
+                mediaPlayer.start();
+            }
         });
         if(ContextCompat.checkSelfPermission(Music.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -59,17 +75,28 @@ public class Music extends AppCompatActivity {
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSION_REQ);
             }
         } else {
-            doStuff();
+            init();
         }
     }
-    private void doStuff() {
+    private void init() {
         listView = findViewById(R.id.musicList);
-        arrayList = new ArrayList<>();
+        arrayListTitle = new ArrayList<>();
+        arrayListLocation = new ArrayList<>();
+        arrayListMedia = new ArrayList<>();
         getMusic();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,arrayList);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayListTitle);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener((adapterView, view, i, l) -> {
-
+        mediaPlayer = new MediaPlayer();
+        listView.setOnItemClickListener((parent, view, position, id)->{
+            mediaPlayer.reset();
+            Uri myUri = Uri.parse(arrayListLocation.get(position));
+            try {
+                mediaPlayer.setDataSource(Music.this, myUri);
+                mediaPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mediaPlayer.start();
         });
     }
 
@@ -85,9 +112,8 @@ public class Music extends AppCompatActivity {
                 String currentTitle = songCursor.getString(songTitle);
                 String currentArtist = songCursor.getString(songArtist);
                 String currentLocation = songCursor.getString(songLocation);
-                arrayList.add("Title: " + currentTitle + "\n"+
-                        "Artist: "+ currentArtist + "\n"+
-                        "Location: " + currentLocation);
+                arrayListTitle.add(currentTitle);
+                arrayListLocation.add(currentLocation);
             } while(songCursor.moveToNext());
         }
     }
@@ -101,18 +127,14 @@ public class Music extends AppCompatActivity {
                     if (ContextCompat.checkSelfPermission(Music.this,
                             Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-                        doStuff();
+                        init();
                     }
-
                 } else {
                     Toast.makeText(this, "No Permission Granted", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 return;
             }
-
         }
     }
-
-
 }
