@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,8 +27,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Music extends AppCompatActivity {
+    private static int currentPos;
     private BottomNavigationView bottomNavigation;
+    private TextView trackShow;
     private ImageView playBtn;
+    private ImageView nextBtn;
+    private ImageView prevBtn;
     private static final int PERMISSION_REQ = 1;
     private ArrayList<String> arrayListTitle;
     private ArrayList<String> arrayListLocation;
@@ -42,6 +47,9 @@ public class Music extends AppCompatActivity {
 
         bottomNavigation = findViewById(R.id.bottomNavigation);
         playBtn = findViewById(R.id.playBtn);
+        prevBtn = findViewById(R.id.prevBtn);
+        nextBtn = findViewById(R.id.nextBtn);
+        trackShow = findViewById(R.id.trackShow);
 
         bottomNavigation.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottomHome){
@@ -60,9 +68,25 @@ public class Music extends AppCompatActivity {
         playBtn.setOnClickListener(view->{
             if(mediaPlayer.isPlaying()){
                 mediaPlayer.pause();
+                playBtn.setImageResource(R.drawable.baseline_play_arrow_24);
             }else{
                 mediaPlayer.start();
+                playBtn.setImageResource(R.drawable.baseline_pause_24);
             }
+        });
+        prevBtn.setOnClickListener(view->{
+            if(currentPos == 0){
+                return;
+            }
+            currentPos--;
+            playMusic(currentPos);
+        });
+        nextBtn.setOnClickListener(view->{
+            if(currentPos == listView.getCount()-1){
+                return;
+            }
+            currentPos++;
+            playMusic(currentPos);
         });
         if(ContextCompat.checkSelfPermission(Music.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -88,18 +112,23 @@ public class Music extends AppCompatActivity {
         listView.setAdapter(adapter);
         mediaPlayer = new MediaPlayer();
         listView.setOnItemClickListener((parent, view, position, id)->{
-            mediaPlayer.reset();
-            Uri myUri = Uri.parse(arrayListLocation.get(position));
-            try {
-                mediaPlayer.setDataSource(Music.this, myUri);
-                mediaPlayer.prepare();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            mediaPlayer.start();
+            currentPos = position;
+            playMusic(currentPos);
         });
     }
-
+    private void playMusic(int position){
+        mediaPlayer.reset();
+        Uri myUri = Uri.parse(arrayListLocation.get(position));
+        try {
+            mediaPlayer.setDataSource(Music.this, myUri);
+            mediaPlayer.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.start();
+        trackShow.setText(arrayListTitle.get(position));
+        playBtn.setImageResource(R.drawable.baseline_pause_24);
+    }
     private void getMusic() {
         ContentResolver contentResolver = getContentResolver();
         Uri songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
