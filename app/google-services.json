@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "809397167523",
+    "project_id": "toucan-eaf32",
+    "storage_bucket": "toucan-eaf32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809397167523:android:b6ba88881402f8ef322616",
+        "android_client_info": {
+          "package_name": "com.example.toucan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809397167523-bje5dg94gnfemn6qij0bl2pdgvlf480k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW8RVVVqruDVwWsehbaRJfrBxPHyO7L9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809397167523-bje5dg94gnfemn6qij0bl2pdgvlf480k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -28,8 +28,11 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"
-            android:maxLines="1"
+            android:singleLine="true"
             android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
             android:gravity="center"
             />
         <LinearLayout

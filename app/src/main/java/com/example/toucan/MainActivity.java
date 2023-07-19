@@ -34,5 +34,4 @@ public class MainActivity extends AppCompatActivity {
         startApp.setOnClickListener(view->{
             startActivity(new Intent(MainActivity.this, Login.class));
         });
-    }
-}
+    }}
