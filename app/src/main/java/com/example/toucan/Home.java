@@ -12,7 +12,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Home extends AppCompatActivity {
     private BottomNavigationView bottomNavigation;
-    private FirebaseDatabase db;
     private DatabaseReference reference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +20,7 @@ public class Home extends AppCompatActivity {
 
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
-        reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference = FirebaseDatabase.getInstance().getReference("Track");
         String key = reference.push().getKey();
         reference.child(key).setValue(new Track("good music", 4.5));
         Toast.makeText(getApplicationContext(), "successfully added!", Toast.LENGTH_LONG).show();

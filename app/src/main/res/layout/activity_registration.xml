@@ -57,16 +57,10 @@
                 android:layout_marginRight="10dp"
                 />
             <EditText
-                android:layout_width="140dp"
+                android:id="@+id/emailTxt"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="Enter first name"
-                android:textColorHint="#A19A9A"
-                android:layout_marginRight="20dp"
-                />
-            <EditText
-                android:layout_width="140dp"
-                android:layout_height="40dp"
-                android:hint="Enter last name"
+                android:hint="Enter email"
                 android:textColorHint="#A19A9A"
                 android:layout_marginRight="20dp"
                 />
@@ -94,6 +88,13 @@
                 android:layout_marginRight="20dp"
                 />
         </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
         <Button
             android:id="@+id/regBtn"
             android:layout_width="wrap_content"
