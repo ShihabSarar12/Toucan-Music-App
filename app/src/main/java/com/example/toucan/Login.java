@@ -1,5 +1,6 @@
 package com.example.toucan;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -16,10 +17,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class Login extends AppCompatActivity {
+    private final int GOOGLE_SIGN_IN_REQ_CODE = 100;
     private EditText emailTxt;
     private EditText passwordTxt;
     private Button loginBtn;
@@ -28,6 +36,8 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ImageView facebookBtn;
     private ImageView googleBtn;
+    private GoogleSignInOptions googleSignInOptions;
+    private GoogleSignInClient googleSignInClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +48,13 @@ public class Login extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         createAccBtn = findViewById(R.id.createAccBtn);
         progressbar = findViewById(R.id.progressbar);
+        googleBtn = findViewById(R.id.googleBtn);
+        facebookBtn = findViewById(R.id.facebookBtn);
         mAuth = FirebaseAuth.getInstance();
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
         loginBtn.setOnClickListener(view->{
             String email = emailTxt.getText().toString().trim();
@@ -75,6 +91,11 @@ public class Login extends AppCompatActivity {
                 }
             });
         });
+        googleBtn.setOnClickListener(view->{
+            progressbar.setVisibility(View.VISIBLE);
+            Intent intent = googleSignInClient.getSignInIntent();
+            startActivityForResult(intent, GOOGLE_SIGN_IN_REQ_CODE);
+        });
         createAccBtn.setOnClickListener(view->{
             startActivity(new Intent(Login.this, Registration.class));
         });
@@ -94,5 +115,22 @@ public class Login extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }).create().show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == GOOGLE_SIGN_IN_REQ_CODE){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                Toast.makeText(getApplicationContext(), "Redirecting", Toast.LENGTH_SHORT).show();
+                task.getResult(ApiException.class);
+                finish();
+                startActivity(new Intent(getApplicationContext(), Home.class));
+            } catch (ApiException e) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

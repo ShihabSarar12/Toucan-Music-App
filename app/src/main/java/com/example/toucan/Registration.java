@@ -86,6 +86,8 @@ public class Registration extends AppCompatActivity {
                 progressbar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), Login.class));
                 } else {
                     if(task.getException() instanceof FirebaseAuthUserCollisionException){
                         Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();

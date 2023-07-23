@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Music extends AppCompatActivity {
-    private static int currentPos;
     private BottomNavigationView bottomNavigation;
     private TextView trackShow;
     private ImageView playBtn;
@@ -45,7 +44,7 @@ public class Music extends AppCompatActivity {
     private ArrayList<String> arrayListTitle;
     private ArrayList<String> arrayListLocation;
     private ArrayList<String> arrayListMedia;
-    public static MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
     private ListView listView;
     ArrayAdapter<String> adapter;
     @Override
@@ -83,18 +82,18 @@ public class Music extends AppCompatActivity {
             }
         });
         prevBtn.setOnClickListener(view->{
-            if(currentPos == 0){
+            if(MusicMediaPlayer.currentIndex == 0){
                 return;
             }
-            currentPos--;
-            playMusic(currentPos);
+            MusicMediaPlayer.currentIndex--;
+            playMusic(MusicMediaPlayer.currentIndex);
         });
         nextBtn.setOnClickListener(view->{
-            if(currentPos == listView.getCount()-1){
+            if(MusicMediaPlayer.currentIndex == listView.getCount()-1){
                 return;
             }
-            currentPos++;
-            playMusic(currentPos);
+            MusicMediaPlayer.currentIndex++;
+            playMusic(MusicMediaPlayer.currentIndex);
         });
         if(ContextCompat.checkSelfPermission(Music.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -109,6 +108,11 @@ public class Music extends AppCompatActivity {
         } else {
             init();
         }
+        if(mediaPlayer.isPlaying()){
+            trackShow.setText(arrayListTitle.get(MusicMediaPlayer.currentIndex));
+            trackShow.setSelected(true);
+            playBtn.setImageResource(R.drawable.baseline_pause_24);
+        }
     }
     private void init() {
         listView = findViewById(R.id.musicList);
@@ -118,10 +122,10 @@ public class Music extends AppCompatActivity {
         getMusic();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayListTitle);
         listView.setAdapter(adapter);
-        mediaPlayer = new MediaPlayer();
+        mediaPlayer = MusicMediaPlayer.getMediaPlayer();
         listView.setOnItemClickListener((parent, view, position, id)->{
-            currentPos = position;
-            playMusic(currentPos);
+            MusicMediaPlayer.currentIndex = position;
+            playMusic(MusicMediaPlayer.currentIndex);
         });
     }
     private void playMusic(int position){

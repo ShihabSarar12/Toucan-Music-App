@@ -4,8 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -13,12 +18,24 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Home extends AppCompatActivity {
     private BottomNavigationView bottomNavigation;
     private DatabaseReference reference;
+    private GoogleSignInOptions googleSignInOptions;
+    private GoogleSignInClient googleSignInClient;
+    private TextView homeTxt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         bottomNavigation = findViewById(R.id.bottomNavigation);
+        homeTxt = findViewById(R.id.homeTxt);
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if(account != null){
+            homeTxt.setText(account.getDisplayName()+" "+account.getEmail());
+        }
 
         reference = FirebaseDatabase.getInstance().getReference("Track");
         String key = reference.push().getKey();
@@ -38,6 +55,16 @@ public class Home extends AppCompatActivity {
                 return true;
             }
             return false;
+        });
+        homeTxt.setOnClickListener(view->{
+            googleSignInClient.signOut().addOnCompleteListener(task->{
+                if(task.isSuccessful()){
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), Login.class));
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 }
