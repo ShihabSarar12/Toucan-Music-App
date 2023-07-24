@@ -8,4 +8,6 @@
     <string name="account_login">Already have an account? </string>
     <string name="account_login_link"><u>login to account</u></string>
     <string name="upload_img">Click to upload image(150px X 150px)</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

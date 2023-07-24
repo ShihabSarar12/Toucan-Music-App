@@ -5,6 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.ContentResolver;
@@ -20,6 +23,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -35,6 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Music extends AppCompatActivity {
+    private LinearLayout showLayout;
     private BottomNavigationView bottomNavigation;
     private TextView trackShow;
     private ImageView playBtn;
@@ -43,7 +48,6 @@ public class Music extends AppCompatActivity {
     private static final int PERMISSION_REQ = 1;
     private ArrayList<String> arrayListTitle;
     private ArrayList<String> arrayListLocation;
-    private ArrayList<String> arrayListMedia;
     private MediaPlayer mediaPlayer;
     private ListView listView;
     ArrayAdapter<String> adapter;
@@ -57,6 +61,8 @@ public class Music extends AppCompatActivity {
         prevBtn = findViewById(R.id.prevBtn);
         nextBtn = findViewById(R.id.nextBtn);
         trackShow = findViewById(R.id.trackShow);
+        showLayout = findViewById(R.id.showLayout);
+
 
         bottomNavigation.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottomHome){
@@ -118,7 +124,6 @@ public class Music extends AppCompatActivity {
         listView = findViewById(R.id.musicList);
         arrayListTitle = new ArrayList<>();
         arrayListLocation = new ArrayList<>();
-        arrayListMedia = new ArrayList<>();
         getMusic();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayListTitle);
         listView.setAdapter(adapter);
@@ -126,7 +131,15 @@ public class Music extends AppCompatActivity {
         listView.setOnItemClickListener((parent, view, position, id)->{
             MusicMediaPlayer.currentIndex = position;
             playMusic(MusicMediaPlayer.currentIndex);
+            showLayout.setVisibility(View.GONE);
+            replaceFragment(new PlayMusic(arrayListTitle.get(position),arrayListLocation.get(position),mediaPlayer));
         });
+    }
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragment);
+        fragmentTransaction.addToBackStack(null).commit();
     }
     private void playMusic(int position){
         mediaPlayer.reset();
