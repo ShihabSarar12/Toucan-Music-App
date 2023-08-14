@@ -52,6 +52,8 @@ public class Home extends AppCompatActivity {
                 finish();
                 return true;
             } else if (item.getItemId() == R.id.bottomPerson) {
+                startActivity(new Intent(Home.this, Profile.class));
+                finish();
                 return true;
             }
             return false;

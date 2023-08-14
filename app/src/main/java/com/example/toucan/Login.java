@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -38,6 +39,10 @@ public class Login extends AppCompatActivity {
     private ImageView googleBtn;
     private GoogleSignInOptions googleSignInOptions;
     private GoogleSignInClient googleSignInClient;
+    private LottieAnimationView toggleBtn;
+    private TextView heroTxt;
+    private TextView switchTxt;
+    public static Boolean animated = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,9 @@ public class Login extends AppCompatActivity {
         progressbar = findViewById(R.id.progressbar);
         googleBtn = findViewById(R.id.googleBtn);
         facebookBtn = findViewById(R.id.facebookBtn);
+        toggleBtn = findViewById(R.id.toggleBtn);
+        heroTxt = findViewById(R.id.heroTxt);
+        switchTxt = findViewById(R.id.switchTxt);
         mAuth = FirebaseAuth.getInstance();
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -80,8 +88,10 @@ public class Login extends AppCompatActivity {
                 return;
             }
             progressbar.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.GONE);
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 progressbar.setVisibility(View.GONE);
+                loginBtn.setVisibility(View.VISIBLE);
                 if (task.isSuccessful()) {
                     Intent intent = new Intent(getApplicationContext(), Home.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -98,6 +108,23 @@ public class Login extends AppCompatActivity {
         });
         createAccBtn.setOnClickListener(view->{
             startActivity(new Intent(Login.this, Registration.class));
+        });
+        toggleBtn.setOnClickListener(view->{
+            if(!animated){
+                toggleBtn.setSpeed(3f);
+                animated = true;
+                toggleBtn.setMinAndMaxFrame(0, 40);
+                switchTxt.setText("Switch from Singer to User");
+                toggleBtn.playAnimation();
+                heroTxt.setText("Singer Login");
+            } else {
+                toggleBtn.setSpeed(3f);
+                animated = false;
+                toggleBtn.setMinAndMaxFrame(40, 92);
+                switchTxt.setText("Switch from User to Singer");
+                toggleBtn.playAnimation();
+                heroTxt.setText("User Login");
+            }
         });
     }
     @Override

@@ -7,18 +7,41 @@
     tools:context=".Login"
     android:orientation="vertical"
     >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/toggleBtn"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            app:lottie_rawRes="@raw/toggle"
+            android:layout_marginTop="10dp"
+            />
+        <TextView
+            android:id="@+id/switchTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Switch from User to Singer"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            />
+    </LinearLayout>
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         app:lottie_rawRes="@raw/login_animation"
         app:lottie_loop="true"
         app:lottie_autoPlay="true"
         />
     <TextView
+        android:id="@+id/heroTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="User Login"
         android:textSize="40sp"
         android:layout_marginTop="20dp"
         android:gravity="center"
@@ -90,6 +113,7 @@
             android:text="Login"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:backgroundTint="@color/main"
             android:paddingVertical="15dp"

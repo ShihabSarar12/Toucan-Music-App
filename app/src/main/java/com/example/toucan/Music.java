@@ -111,7 +111,19 @@ public class Music extends AppCompatActivity {
                 ActivityCompat.requestPermissions(Music.this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSION_REQ);
             }
-        } else {
+        }
+        if(ContextCompat.checkSelfPermission(Music.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(Music.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                ActivityCompat.requestPermissions(Music.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},PERMISSION_REQ);
+            } else {
+                ActivityCompat.requestPermissions(Music.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},PERMISSION_REQ);
+            }
+        }
+        else {
             init();
         }
         if(mediaPlayer.isPlaying()){
