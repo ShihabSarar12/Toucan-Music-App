@@ -29,6 +29,7 @@ public class Profile extends AppCompatActivity {
     private TextView uploadTxt;
     private StorageReference reference;
     private DatabaseReference databaseReference;
+    private static final int REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,50 +38,49 @@ public class Profile extends AppCompatActivity {
         uploadBtn = findViewById(R.id.uploadBtn);
         uploadTxt = findViewById(R.id.uploadTxt);
         reference = FirebaseStorage.getInstance().getReference();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Uploads");
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         uploadBtn.setOnClickListener(view->{
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("audio/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select music files"), 1);
+            startActivityForResult(intent, REQUEST_CODE);
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1 && resultCode==RESULT_OK && data!=null && data.getData()!=null){
-           uploadFile(data.getData());
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null){
+            Uri selectedFileUri = data.getData();
+            uploadAudioFile(selectedFileUri);
         }
     }
 
-    private void uploadFile(Uri uri) {
-        if(uri == null){
-            Toast.makeText(getApplicationContext(), "uri empty", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    private void uploadAudioFile(Uri fileUri) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading files...");
         progressDialog.show();
-        StorageReference upRef = reference.child("Uploads/"+System.currentTimeMillis()+"mp3");
-        upRef.putFile(uri)
+        StorageReference upRef = reference.child("Uploads/"+fileUri.getLastPathSegment());
+        upRef.putFile(fileUri)
                 .addOnSuccessListener(taskSnapshot -> {
-                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                    while(!uriTask.isComplete()){
-                        Uri url = uriTask.getResult();
-                        databaseReference.child(Objects.requireNonNull(databaseReference.push().getKey())).setValue(new MusicClass(url.toString()));
-                        Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                    }
+                    upRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        String downloadUrl = uri.toString();
+                        storeInDatabase(downloadUrl);
+                    });
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Successfully uploaded", Toast.LENGTH_SHORT).show();
                 })
                 .addOnProgressListener(snapshot -> {
                     double progress = (double)(100 * snapshot.getBytesTransferred())/snapshot.getTotalByteCount();
                     progressDialog.setMessage("Uploaded: "+(int)progress+"%");
                 })
-                .addOnFailureListener(exception->{
+                .addOnFailureListener(exception-> {
                     Toast.makeText(getApplicationContext(), "Failed to upload", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 });
+    }
+
+    private void storeInDatabase(String downloadUrl){
+        databaseReference.child("audio").push().setValue(downloadUrl);
     }
 }

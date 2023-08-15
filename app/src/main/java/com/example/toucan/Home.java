@@ -37,11 +37,6 @@ public class Home extends AppCompatActivity {
             homeTxt.setText(account.getDisplayName()+" "+account.getEmail());
         }
 
-        reference = FirebaseDatabase.getInstance().getReference("Track");
-        String key = reference.push().getKey();
-        reference.child(key).setValue(new Track("good music", 4.5));
-        Toast.makeText(getApplicationContext(), "successfully added!", Toast.LENGTH_LONG).show();
-
         bottomNavigation.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottomHome){
                 return true;
